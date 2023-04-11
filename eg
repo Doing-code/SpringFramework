@@ -1,0 +1,27 @@
+1、创建 Bean 容器
+可以理解为是一个 Map 集合 ，beanName : BeanDefinition
+
+2、实现 Bean 的定义、注册、获取
+在 Bean 工厂的实现中，包括了 Bean 的注册，注册 Bean 的定义信息
+DefaultListableBeanFactory 具备了 Bean 注册和获取，继承了 BeanFactory，继承了模板类
+
+3、基于 Cglib 实例化策略，有参无参构造
+
+4、注入属性和依赖对象
+BeanReference / PropertyValue
+
+5、资源加载器解析文件注册对象
+通过解析配置文件的方式，将 Bean 定义加载到容器中，解析 bean 节点
+
+6、实现应用上下文
+ApplicationContext
+BeanFactoryPostProcessor：在BeanDefinition 加载完成 & Bean实例化之前，修改 BeanDefinition 的属性值
+BeanPostProcessor：在Bean实例化之后，修改 Bean 属性信息
+
+
+
+
+
+
+
+
