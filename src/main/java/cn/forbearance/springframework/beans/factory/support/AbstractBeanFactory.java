@@ -5,7 +5,8 @@ import cn.forbearance.springframework.beans.factory.FactoryBean;
 import cn.forbearance.springframework.beans.factory.config.BeanDefinition;
 import cn.forbearance.springframework.beans.factory.config.BeanPostProcessor;
 import cn.forbearance.springframework.beans.factory.config.ConfigurableBeanFactory;
-import cn.forbearance.springframework.utils.ClassUtils;
+import cn.forbearance.springframework.util.ClassUtils;
+import cn.forbearance.springframework.util.StringValueResolver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,8 @@ import java.util.List;
 public abstract class AbstractBeanFactory extends FactoryBeanRegisterSupport implements ConfigurableBeanFactory {
 
     private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<BeanPostProcessor>();
+
+    private final List<StringValueResolver> embeddedValueResolvers = new ArrayList<>();
 
     private ClassLoader beanClassLoader = ClassUtils.getDefaultClassLoader();
 
@@ -79,6 +82,20 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegisterSupport imp
      * @throws BeansException
      */
     protected abstract Object createBean(String beanName, BeanDefinition beanDefinition, Object[] args) throws BeansException;
+
+    @Override
+    public void addEmbeddedValueResolver(StringValueResolver resolver) {
+        this.embeddedValueResolvers.add(resolver);
+    }
+
+    @Override
+    public String resolverEmbeddedValue(String val) {
+        String result = val;
+        for (StringValueResolver resolver : this.embeddedValueResolvers) {
+            result = resolver.resolverStringValue(result);
+        }
+        return result;
+    }
 
     @Override
     public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) {

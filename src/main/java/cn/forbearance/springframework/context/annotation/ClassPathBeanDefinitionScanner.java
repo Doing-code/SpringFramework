@@ -1,5 +1,6 @@
 package cn.forbearance.springframework.context.annotation;
 
+import cn.forbearance.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import cn.forbearance.springframework.beans.factory.config.BeanDefinition;
 import cn.forbearance.springframework.beans.factory.support.BeanDefinitionRegistry;
 import cn.forbearance.springframework.stereotype.Component;
@@ -27,6 +28,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
         for (String basePackage : basePackages) {
             Set<BeanDefinition> candidates = findCandidateComponent(basePackage);
             for (BeanDefinition beanDefinition : candidates) {
+                // 解析 scope 作用域
                 String beanScope = resolveBeanScope(beanDefinition);
                 if (StrUtil.isNotEmpty(beanScope)) {
                     beanDefinition.setScope(beanScope);
@@ -34,6 +36,8 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
                 registry.registerBeanDefinition(determineBeanName(beanDefinition), beanDefinition);
             }
         }
+        // 注册处理（@Autowired、@Value）注解的 BeanPostProcessor
+        registry.registerBeanDefinition("cn.forbearance.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor", new BeanDefinition(AutowiredAnnotationBeanPostProcessor.class));
     }
 
     private String resolveBeanScope(BeanDefinition beanDefinition) {

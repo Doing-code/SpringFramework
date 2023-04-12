@@ -1,4 +1,4 @@
-package cn.forbearance.springframework.utils;
+package cn.forbearance.springframework.util;
 
 import java.util.Objects;
 

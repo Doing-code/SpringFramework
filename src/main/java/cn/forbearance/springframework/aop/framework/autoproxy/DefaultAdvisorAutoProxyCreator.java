@@ -3,6 +3,8 @@ package cn.forbearance.springframework.aop.framework.autoproxy;
 import cn.forbearance.springframework.aop.*;
 import cn.forbearance.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor;
 import cn.forbearance.springframework.aop.framework.ProxyFactory;
+import cn.forbearance.springframework.beans.BeansException;
+import cn.forbearance.springframework.beans.PropertyValues;
 import cn.forbearance.springframework.beans.factory.BeanFactory;
 import cn.forbearance.springframework.beans.factory.BeanFactoryAware;
 import cn.forbearance.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
@@ -48,6 +50,16 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
 
             return new ProxyFactory(advisedSupport).getProxy();
         }
+        return null;
+    }
+
+    @Override
+    public boolean postProcessAfterInstantiation(Object bean, String beanName) throws BeansException {
+        return true;
+    }
+
+    @Override
+    public PropertyValues postProcessPropertyValues(PropertyValues pvs, Object bean, String beanName) throws BeansException {
         return null;
     }
 

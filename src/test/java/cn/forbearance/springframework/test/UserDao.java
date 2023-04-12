@@ -1,11 +1,14 @@
 package cn.forbearance.springframework.test;
 
+import cn.forbearance.springframework.stereotype.Component;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author cristina
  */
+@Component
 public class UserDao {
 
     private static Map<String, String> hashMap = new HashMap<>();

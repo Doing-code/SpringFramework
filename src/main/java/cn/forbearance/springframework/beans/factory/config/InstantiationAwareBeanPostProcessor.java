@@ -1,5 +1,7 @@
 package cn.forbearance.springframework.beans.factory.config;
 
+import cn.forbearance.springframework.beans.BeansException;
+import cn.forbearance.springframework.beans.PropertyValues;
 import cn.hutool.core.bean.BeanException;
 
 /**
@@ -19,4 +21,23 @@ public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
      * @throws BeanException
      */
     Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeanException;
+
+    /**
+     * #
+     * @param bean
+     * @param beanName
+     * @return
+     * @throws BeansException
+     */
+    boolean postProcessAfterInstantiation(Object bean, String beanName) throws BeansException;
+
+    /**
+     * Bean 实例化之后，属性赋值之前执行
+     * @param pvs
+     * @param bean
+     * @param beanName
+     * @return
+     * @throws BeansException
+     */
+    PropertyValues postProcessPropertyValues(PropertyValues pvs, Object bean, String beanName) throws BeansException;
 }

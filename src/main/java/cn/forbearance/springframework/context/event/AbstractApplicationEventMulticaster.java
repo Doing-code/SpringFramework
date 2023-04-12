@@ -5,7 +5,7 @@ import cn.forbearance.springframework.beans.factory.BeanFactory;
 import cn.forbearance.springframework.beans.factory.BeanFactoryAware;
 import cn.forbearance.springframework.context.ApplicationEvent;
 import cn.forbearance.springframework.context.ApplicationListener;
-import cn.forbearance.springframework.utils.ClassUtils;
+import cn.forbearance.springframework.util.ClassUtils;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
