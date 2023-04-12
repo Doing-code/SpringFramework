@@ -46,6 +46,9 @@ FactoryBean 是特殊的 Bean，工厂 Bean，作用类似于 @Bean，但 Factor
 
 11、AOP
 
+12、AOP
+每个 BeanDefinition 都会过一遍 getBeanPostProcessors() 循环，只有满足条件的才会被创建代理对象（通过切点找到给定的接口或目标类）
+
 
 
 

@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <beans>
+    <bean id="userDao" class="cn.forbearance.springframework.test.UserDao"/>
+    <bean id="userService" class="cn.forbearance.springframework.test.UserService"/>
+    <bean id="userService2" class="cn.forbearance.springframework.test.UserService2"/>
 
+    <bean class="cn.forbearance.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
 
-<!--    <bean id="userService" class="cn.forbearance.springframework.test.UserService" scope="prototype">-->
-<!--        <property name="uId" value="10001"/>-->
-<!--        <property name="company" value="腾讯"/>-->
-<!--        <property name="location" value="深圳"/>-->
-<!--        <property name="userDao" ref="myBeanFactory"/>-->
-<!--    </bean>-->
+    <bean id="beforeAdvice" class="cn.forbearance.springframework.test.UserServiceBeforeAdvice"/>
+    <bean id="beforeAdvice2" class="cn.forbearance.springframework.test.UserServiceBeforeAdvice2"/>
 
-<!--    <bean id="myBeanFactory" class="cn.forbearance.springframework.test.MyBeanFactory"/>-->
+    <bean id="methodInterceptor" class="cn.forbearance.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor">
+        <property name="advice" ref="beforeAdvice"/>
+    </bean>
 
-    <bean class="cn.forbearance.springframework.test.MyEventListener"/>
-
-<!--    <bean class="cn.forbearance.springframework.test.MyBeanFactoryPostProcessor"/>-->
-<!--    <bean class="cn.forbearance.springframework.test.MyBeanPostProcessor"/>-->
-
+    <bean id="pointcutAdvisor" class="cn.forbearance.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor">
+        <property name="expression" value="execution(* cn.forbearance.springframework.test.IUserService.*(..))"/>
+        <property name="advice" ref="methodInterceptor"/>
+    </bean>
 </beans>

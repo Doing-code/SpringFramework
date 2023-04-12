@@ -3,7 +3,7 @@ package cn.forbearance.springframework.test;
 /**
  * @author cristina
  */
-public class UserService implements IUserService{
+public class UserService2 implements IUserService{
 
     private String uId;
 
@@ -13,15 +13,15 @@ public class UserService implements IUserService{
 
     private IUserDao userDao;
 
-    public UserService() {
+    public UserService2() {
     }
 
-    public UserService(String uId) {
+    public UserService2(String uId) {
         this.uId = uId;
     }
 
     public String query() {
-        return "树枝666";
+        return "树枝777";
     }
 
     @Override

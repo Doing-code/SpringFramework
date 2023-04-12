@@ -3,11 +3,8 @@ package cn.forbearance.springframework.beans.factory.support;
 import cn.forbearance.springframework.beans.PropertyValue;
 import cn.forbearance.springframework.beans.PropertyValues;
 import cn.forbearance.springframework.beans.factory.*;
-import cn.forbearance.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import cn.forbearance.springframework.beans.factory.config.BeanDefinition;
+import cn.forbearance.springframework.beans.factory.config.*;
 import cn.forbearance.springframework.beans.BeansException;
-import cn.forbearance.springframework.beans.factory.config.BeanPostProcessor;
-import cn.forbearance.springframework.beans.factory.config.BeanReference;
 import cn.hutool.core.bean.BeanException;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
@@ -28,6 +25,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     protected Object createBean(String beanName, BeanDefinition beanDefinition, Object[] args) throws BeansException {
         Object bean;
         try {
+            bean = resolveBeforeInstantiation(beanName, beanDefinition);
+            if (null != bean) {
+                return bean;
+            }
+
             // TODO 有参构造的对象怎么创建?，参考SpringBean容器源码的实现方式，BeanFactory添加一个 Object getBean(String name, Object... args)，JDK（DeclaredConstructor） 或 Cglib（基于ASM）
             bean = createBeanInstance(beanDefinition, beanName, args);
             // 填充属性 TODO 还未处理循环依赖
@@ -44,6 +46,32 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             addSingleton(beanName, bean);
 
         return bean;
+    }
+
+    /**
+     * 代理对象不是普通对象，需要前置于其他对象的创建
+     * 需要优先完成 Bean 对象的判断，是否需要代理，有则返回代理对象
+     *
+     * @param beanName
+     * @param beanDefinition
+     * @return
+     */
+    protected Object resolveBeforeInstantiation(String beanName, BeanDefinition beanDefinition) {
+        Object bean = applyBeanPostProcessorBeforeInstantiation(beanDefinition.getBeanClass(), beanName);
+        if (null != bean) {
+            bean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
+        }
+        return bean;
+    }
+
+    public Object applyBeanPostProcessorBeforeInstantiation(Class<?> beanClass, String beanName) throws BeanException {
+        for (BeanPostProcessor processor : getBeanPostProcessors()) {
+            if (processor instanceof InstantiationAwareBeanPostProcessor) {
+                Object result = ((InstantiationAwareBeanPostProcessor) processor).postProcessBeforeInstantiation(beanClass, beanName);
+                if (null != result) return result;
+            }
+        }
+        return null;
     }
 
     protected void registerDisposableBeanIfNecessary(String beanName, Object bean, BeanDefinition beanDefinition) {
