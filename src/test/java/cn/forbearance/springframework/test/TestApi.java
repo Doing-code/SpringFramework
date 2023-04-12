@@ -85,4 +85,11 @@ public class TestApi {
 //        System.out.println(userService1 == userService2);
     }
 
+    @Test
+    public void testEventListener() {
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
+        applicationContext.publisher(new MyEvent(applicationContext, 123L, "success"));
+        applicationContext.registerShutdownHook();
+    }
+
 }

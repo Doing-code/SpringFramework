@@ -1,6 +1,8 @@
 package cn.forbearance.springframework.context;
 
+import cn.forbearance.springframework.beans.factory.HierarchicalBeanFactory;
 import cn.forbearance.springframework.beans.factory.ListableBeanFactory;
+import cn.forbearance.springframework.core.io.ResourceLoader;
 
 /**
  * Central interface<p>
@@ -10,5 +12,5 @@ import cn.forbearance.springframework.beans.factory.ListableBeanFactory;
  *
  * @author cristina
  */
-public interface ApplicationContext extends ListableBeanFactory {
+public interface ApplicationContext extends ListableBeanFactory, HierarchicalBeanFactory, ResourceLoader, ApplicationEventPublisher {
 }

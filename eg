@@ -38,6 +38,11 @@ Bean 生命周期
     10、Bean 销毁方法（Disposable、destroy）
 
 9、作用域以及 FactoryBean
+FactoryBean 是特殊的 Bean，工厂 Bean，作用类似于 @Bean，但 FactoryBean 能实现更多复杂的功能，对对象增强。
+
+10、容器事件和事件监听器
+
+简单工厂BeanFactory、工厂方法FactoryBean、策略模式访问资源、观察者模式 事件监听
 
 
 

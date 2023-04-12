@@ -2,14 +2,16 @@
 <beans>
 
 
-    <bean id="userService" class="cn.forbearance.springframework.test.UserService" scope="prototype">
-        <property name="uId" value="10001"/>
-        <property name="company" value="腾讯"/>
-        <property name="location" value="深圳"/>
-        <property name="userDao" ref="myBeanFactory"/>
-    </bean>
+<!--    <bean id="userService" class="cn.forbearance.springframework.test.UserService" scope="prototype">-->
+<!--        <property name="uId" value="10001"/>-->
+<!--        <property name="company" value="腾讯"/>-->
+<!--        <property name="location" value="深圳"/>-->
+<!--        <property name="userDao" ref="myBeanFactory"/>-->
+<!--    </bean>-->
 
-    <bean id="myBeanFactory" class="cn.forbearance.springframework.test.MyBeanFactory"/>
+<!--    <bean id="myBeanFactory" class="cn.forbearance.springframework.test.MyBeanFactory"/>-->
+
+    <bean class="cn.forbearance.springframework.test.MyEventListener"/>
 
 <!--    <bean class="cn.forbearance.springframework.test.MyBeanFactoryPostProcessor"/>-->
 <!--    <bean class="cn.forbearance.springframework.test.MyBeanPostProcessor"/>-->
