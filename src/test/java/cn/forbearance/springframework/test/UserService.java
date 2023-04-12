@@ -1,9 +1,12 @@
 package cn.forbearance.springframework.test;
 
+import cn.forbearance.springframework.beans.factory.DisposableBean;
+import cn.forbearance.springframework.beans.factory.InitializingBean;
+
 /**
  * @author cristina
  */
-public class UserService {
+public class UserService implements InitializingBean, DisposableBean {
 
     private String uId;
 
@@ -63,5 +66,15 @@ public class UserService {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        System.out.println("执行：UserService.destroy");
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("执行：UserService.afterPropertiesSet");
     }
 }
