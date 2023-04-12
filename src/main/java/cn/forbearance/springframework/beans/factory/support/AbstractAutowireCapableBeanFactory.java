@@ -2,8 +2,7 @@ package cn.forbearance.springframework.beans.factory.support;
 
 import cn.forbearance.springframework.beans.PropertyValue;
 import cn.forbearance.springframework.beans.PropertyValues;
-import cn.forbearance.springframework.beans.factory.DisposableBean;
-import cn.forbearance.springframework.beans.factory.InitializingBean;
+import cn.forbearance.springframework.beans.factory.*;
 import cn.forbearance.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import cn.forbearance.springframework.beans.factory.config.BeanDefinition;
 import cn.forbearance.springframework.beans.BeansException;
@@ -98,6 +97,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     }
 
     private Object initializeBean(String beanName, Object bean, BeanDefinition beanDefinition) {
+        invokeAwareMethods(bean, beanName);
         // 执行 BeanPostProcessor before 前置
         Object wrappedBean = applyBeanPostProcessorsBeforeInitialization(bean, beanName);
         // 执行初始化方法
@@ -124,6 +124,20 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
                 throw new BeanException("Could not find an init method named '" + initMethodName + "' on bean with name '" + beanName + "'");
             }
             initMethod.invoke(bean);
+        }
+    }
+
+    private void invokeAwareMethods(Object bean, String beanName) {
+        if (bean instanceof Aware) {
+            if (bean instanceof BeanFactoryAware) {
+                ((BeanFactoryAware) bean).setBeanFactory(this);
+            }
+            if (bean instanceof BeanClassLoaderAware) {
+                ((BeanClassLoaderAware) bean).setBeanClassLoader(getBeanClassLoader());
+            }
+            if (bean instanceof BeanNameAware) {
+                ((BeanNameAware) bean).setBeanName(beanName);
+            }
         }
     }
 

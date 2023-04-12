@@ -67,4 +67,16 @@ public class TestApi {
         userService.query();
     }
 
+    @Test
+    public void testAware() {
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
+        applicationContext.registerShutdownHook();
+
+        UserService userService = applicationContext.getBean("userService", UserService.class);
+        userService.query();
+
+        System.out.println("factory: " + userService.getBeanFactory());
+        System.out.println("application: " + userService.getApplicationContext());
+    }
+
 }

@@ -18,6 +18,27 @@ ApplicationContext
 BeanFactoryPostProcessor：在BeanDefinition 加载完成 & Bean实例化之前，修改 BeanDefinition 的属性值
 BeanPostProcessor：在Bean实例化之后，修改 Bean 属性信息
 
+7、初始化和销毁方法
+InitializingBean、init-method
+DisposableBean、destroy-method
+
+8、Aware感知容器对象
+Aware
+
+Bean 生命周期
+    1、XML 读取配置文件
+    2、将配置文件 Bean 封装成 BeanDefinition
+    3、BeanFactoryPostProcessor 修改 BeanDefinition
+    4、Bean 实例化
+    5、Aware 感知
+    6、BeanPostProcessor 前置处理
+    7、Bean 初始化方法（InitializingBean、init-method）
+    8、BeanPostProcessor 后置处理
+    9、使用 Bean
+    10、Bean 销毁方法（Disposable、destroy）
+
+
+
 
 
 
