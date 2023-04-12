@@ -39,13 +39,13 @@ public class TestApi {
     @Test
     public void test_path() throws IOException {
        /* DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
-        Resource resource = resourceLoader.getResource("classpath:important.properties");
+        Resource resource = resourceLoader.getResource("classpath:token.properties");
         String content = IoUtil.readUtf8(resource.getInputStream());
         System.out.println(content);*/
         DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 
         XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
-        reader.loadBeanDefinitions("classpath:spring.xml");
+        reader.loadBeanDefinitions("classpath:spring-scan.xml");
 
         UserService userService = beanFactory.getBean("userService", UserService.class);
         userService.query();
@@ -53,14 +53,14 @@ public class TestApi {
 
     @Test
     public void test_application() {
-        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring-scan.xml");
         UserService userService = applicationContext.getBean("userService", UserService.class);
         userService.query();
     }
 
     @Test
     public void test_initDestroy() {
-        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring-scan.xml");
         applicationContext.registerShutdownHook();
 
         UserService userService = applicationContext.getBean("userService", UserService.class);
@@ -69,7 +69,7 @@ public class TestApi {
 
     @Test
     public void testAware() {
-        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring-scan.xml");
         applicationContext.registerShutdownHook();
 
         UserService userService = applicationContext.getBean("userService", UserService.class);
@@ -81,7 +81,7 @@ public class TestApi {
 
     @Test
     public void testScope() {
-        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring-scan.xml");
         applicationContext.registerShutdownHook();
 
         UserService userService1 = applicationContext.getBean("userService", UserService.class);
@@ -93,7 +93,7 @@ public class TestApi {
 
     @Test
     public void testEventListener() {
-        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring-scan.xml");
         applicationContext.publisher(new MyEvent(applicationContext, 123L, "success"));
         applicationContext.registerShutdownHook();
     }
@@ -133,11 +133,19 @@ public class TestApi {
     }
     @Test
     public void test_aop2() {
-        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring-scan.xml");
         IUserService userService = applicationContext.getBean("userService", IUserService.class);
         IUserService userService2 = applicationContext.getBean("userService2", IUserService.class);
         System.out.println("测试结果：" + userService.query());
         System.out.println("测试结果：" + userService2.query());
     }
+
+    @Test
+    public void test_property() {
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
+        IUserService userService = applicationContext.getBean("userService", IUserService.class);
+        System.out.println("测试结果：" + userService.query());
+    }
+
 
 }

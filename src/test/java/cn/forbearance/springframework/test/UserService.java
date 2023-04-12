@@ -1,9 +1,14 @@
 package cn.forbearance.springframework.test;
 
+import cn.forbearance.springframework.stereotype.Component;
+
 /**
  * @author cristina
  */
+@Component("userService")
 public class UserService implements IUserService{
+
+    private String token;
 
     private String uId;
 
@@ -61,4 +66,11 @@ public class UserService implements IUserService{
         this.location = location;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }
