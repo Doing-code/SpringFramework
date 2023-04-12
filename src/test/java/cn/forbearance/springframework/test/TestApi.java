@@ -1,5 +1,10 @@
 package cn.forbearance.springframework.test;
 
+import cn.forbearance.springframework.aop.AdvisedSupport;
+import cn.forbearance.springframework.aop.TargetSource;
+import cn.forbearance.springframework.aop.aspectj.AspectJExpressionPointcut;
+import cn.forbearance.springframework.aop.framework.Cglib2AopProxy;
+import cn.forbearance.springframework.aop.framework.JdkDynamicAopProxy;
 import cn.forbearance.springframework.beans.factory.support.DefaultListableBeanFactory;
 import cn.forbearance.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import cn.forbearance.springframework.context.support.ClassPathXmlApplicationContext;
@@ -7,6 +12,7 @@ import org.junit.Test;
 import org.openjdk.jol.info.ClassLayout;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 
 /**
  * @author cristina
@@ -91,5 +97,40 @@ public class TestApi {
         applicationContext.publisher(new MyEvent(applicationContext, 123L, "success"));
         applicationContext.registerShutdownHook();
     }
+
+    @Test
+    public void test_aop() throws NoSuchMethodException {
+        AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut("execution(* cn.forbearance.springframework.test.UserService.*(..))");
+        Class<UserService> clazz = UserService.class;
+        Method method = clazz.getDeclaredMethod("query");
+
+        System.out.println(pointcut.matches(clazz));
+        System.out.println(pointcut.matches(method, clazz));
+
+        // true、true
+    }
+
+    @Test
+    public void test_aop1() {
+        // 目标对象
+        IUserService userService = new UserService();
+
+        // 组装代理信息
+        AdvisedSupport advisedSupport = new AdvisedSupport();
+        advisedSupport.setTargetSource(new TargetSource(userService));
+        advisedSupport.setMethodInterceptor(new UserServiceInterceptor());
+        advisedSupport.setMethodMatcher(new AspectJExpressionPointcut("execution(* cn.forbearance.springframework.test.IUserService.*(..))"));
+
+        // 代理对象(JdkDynamicAopProxy)
+        IUserService proxy_jdk = (IUserService) new JdkDynamicAopProxy(advisedSupport).getProxy();
+        // 测试调用
+        System.out.println("测试结果：" + proxy_jdk.query());
+
+        // 代理对象(Cglib2AopProxy)
+        IUserService proxy_cglib = (IUserService) new Cglib2AopProxy(advisedSupport).getProxy();
+        // 测试调用
+        System.out.println("测试结果：" + proxy_cglib.register("花花"));
+    }
+
 
 }

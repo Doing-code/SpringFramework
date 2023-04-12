@@ -3,7 +3,7 @@ package cn.forbearance.springframework.test;
 /**
  * @author cristina
  */
-public class UserService {
+public class UserService implements IUserService{
 
     private String uId;
 
@@ -20,8 +20,13 @@ public class UserService {
         this.uId = uId;
     }
 
-    public void query() {
-        System.out.println(userDao.queryUserName(uId) + "," + company + "," + location);
+    public String query() {
+        return "query";
+    }
+
+    @Override
+    public String register(String name) {
+        return name;
     }
 
     public String getuId() {

@@ -44,6 +44,8 @@ FactoryBean 是特殊的 Bean，工厂 Bean，作用类似于 @Bean，但 Factor
 
 简单工厂BeanFactory、工厂方法FactoryBean、策略模式访问资源、观察者模式 事件监听
 
+11、AOP
+
 
 
 
