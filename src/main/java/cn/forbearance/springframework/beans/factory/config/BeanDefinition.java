@@ -1,6 +1,7 @@
 package cn.forbearance.springframework.beans.factory.config;
 
 import cn.forbearance.springframework.beans.PropertyValues;
+import cn.forbearance.springframework.beans.factory.ConfigurableListableBeanFactory;
 
 /**
  * 用于存放 Bean 对象, eg Bean Class，属性填充
@@ -9,6 +10,10 @@ import cn.forbearance.springframework.beans.PropertyValues;
  */
 public class BeanDefinition {
 
+    String SCOPE_SINGLETON = ConfigurableListableBeanFactory.SCOPE_SINGLETON;
+
+    String SCOPE_PROTOTYPE = ConfigurableListableBeanFactory.SCOPE_PROTOTYPE;
+
     private Class beanClass;
 
     private PropertyValues propertyValues;
@@ -16,6 +21,12 @@ public class BeanDefinition {
     private String initMethodName;
 
     private String destroyMethodName;
+
+    private String scope = SCOPE_SINGLETON;
+
+    private boolean singleton = true;
+
+    private boolean prototype = true;
 
     public BeanDefinition(Class beanClass) {
         this.beanClass = beanClass;
@@ -56,8 +67,32 @@ public class BeanDefinition {
     }
 
     public void setPropertyValues(PropertyValues propertyValues) {
-
-
         this.propertyValues = propertyValues;
+    }
+
+    public String getScope() {
+        return scope;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+        this.singleton = SCOPE_SINGLETON.equals(scope);
+        this.prototype = SCOPE_PROTOTYPE.equals(scope);
+    }
+
+    public boolean isSingleton() {
+        return singleton;
+    }
+
+    public void setSingleton(boolean singleton) {
+        this.singleton = singleton;
+    }
+
+    public boolean isPrototype() {
+        return prototype;
+    }
+
+    public void setPrototype(boolean prototype) {
+        this.prototype = prototype;
     }
 }

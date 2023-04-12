@@ -1,14 +1,9 @@
 package cn.forbearance.springframework.test;
 
-import cn.forbearance.springframework.beans.factory.*;
-import cn.forbearance.springframework.context.ApplicationContext;
-import cn.forbearance.springframework.context.ApplicationContextAware;
-import cn.hutool.core.bean.BeanException;
-
 /**
  * @author cristina
  */
-public class UserService implements BeanFactoryAware, BeanNameAware, BeanClassLoaderAware, ApplicationContextAware {
+public class UserService {
 
     private String uId;
 
@@ -16,11 +11,7 @@ public class UserService implements BeanFactoryAware, BeanNameAware, BeanClassLo
 
     private String location;
 
-    private UserDao userDao;
-
-    private ApplicationContext applicationContext;
-
-    private BeanFactory beanFactory;
+    private IUserDao userDao;
 
     public UserService() {
     }
@@ -29,17 +20,8 @@ public class UserService implements BeanFactoryAware, BeanNameAware, BeanClassLo
         this.uId = uId;
     }
 
-    @Override
-    public String toString() {
-        return "UserService{" +
-                "uId='" + uId + '\'' +
-                ", company='" + company + '\'' +
-                ", location='" + location + '\'' +
-                '}';
-    }
-
     public void query() {
-        System.out.println(toString());
+        System.out.println(userDao.queryUserName(uId) + "," + company + "," + location);
     }
 
     public String getuId() {
@@ -50,11 +32,11 @@ public class UserService implements BeanFactoryAware, BeanNameAware, BeanClassLo
         this.uId = uId;
     }
 
-    public UserDao getUserDao() {
+    public IUserDao getUserDao() {
         return userDao;
     }
 
-    public void setUserDao(UserDao userDao) {
+    public void setUserDao(IUserDao userDao) {
         this.userDao = userDao;
     }
 
@@ -74,31 +56,4 @@ public class UserService implements BeanFactoryAware, BeanNameAware, BeanClassLo
         this.location = location;
     }
 
-    @Override
-    public void setBeanClassLoader(ClassLoader classLoader) {
-        System.out.println("ClassLoader：" + classLoader);
-    }
-
-    @Override
-    public void setBeanFactory(BeanFactory beanFactory) throws BeanException {
-        this.beanFactory = beanFactory;
-    }
-
-    @Override
-    public void setBeanName(String beanName) {
-        System.out.println("Bean Name is：" + beanName);
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext context) {
-        this.applicationContext = context;
-    }
-
-    public ApplicationContext getApplicationContext() {
-        return applicationContext;
-    }
-
-    public BeanFactory getBeanFactory() {
-        return beanFactory;
-    }
 }

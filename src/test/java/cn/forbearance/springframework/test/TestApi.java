@@ -1,16 +1,10 @@
 package cn.forbearance.springframework.test;
 
-import cn.forbearance.springframework.beans.PropertyValue;
-import cn.forbearance.springframework.beans.PropertyValues;
-import cn.forbearance.springframework.beans.factory.config.BeanDefinition;
-import cn.forbearance.springframework.beans.factory.config.BeanReference;
 import cn.forbearance.springframework.beans.factory.support.DefaultListableBeanFactory;
 import cn.forbearance.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import cn.forbearance.springframework.context.support.ClassPathXmlApplicationContext;
-import cn.forbearance.springframework.core.io.DefaultResourceLoader;
-import cn.forbearance.springframework.core.io.Resource;
-import cn.hutool.core.io.IoUtil;
 import org.junit.Test;
+import org.openjdk.jol.info.ClassLayout;
 
 import java.io.IOException;
 
@@ -75,8 +69,20 @@ public class TestApi {
         UserService userService = applicationContext.getBean("userService", UserService.class);
         userService.query();
 
-        System.out.println("factory: " + userService.getBeanFactory());
-        System.out.println("application: " + userService.getApplicationContext());
+//        System.out.println("factory: " + userService.getBeanFactory());
+//        System.out.println("application: " + userService.getApplicationContext());
+    }
+
+    @Test
+    public void testScope() {
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
+        applicationContext.registerShutdownHook();
+
+        UserService userService1 = applicationContext.getBean("userService", UserService.class);
+//        UserService userService2 = applicationContext.getBean("userService", UserService.class);
+        userService1.query();
+
+//        System.out.println(userService1 == userService2);
     }
 
 }

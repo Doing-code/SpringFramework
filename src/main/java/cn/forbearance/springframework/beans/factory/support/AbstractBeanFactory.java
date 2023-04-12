@@ -1,6 +1,7 @@
 package cn.forbearance.springframework.beans.factory.support;
 
 import cn.forbearance.springframework.beans.BeansException;
+import cn.forbearance.springframework.beans.factory.FactoryBean;
 import cn.forbearance.springframework.beans.factory.config.BeanDefinition;
 import cn.forbearance.springframework.beans.factory.config.BeanPostProcessor;
 import cn.forbearance.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -11,10 +12,12 @@ import java.util.List;
 
 /**
  * 抽象类定义模板方法, 注册单例
+ * <p>
+ * FactoryBeanRegisterSupport 扩展 创建 FactoryBean 对象的能力
  *
  * @author cristina
  */
-public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
+public abstract class AbstractBeanFactory extends FactoryBeanRegisterSupport implements ConfigurableBeanFactory {
 
     private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<BeanPostProcessor>();
 
@@ -36,12 +39,25 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
     }
 
     protected <T> T doGetBean(final String name, final Object[] args) {
-        Object bean = getSingleton(name);
-        if (bean != null) {
-            return (T) bean;
+        Object sharedInstance = getSingleton(name);
+        if (sharedInstance != null) {
+            return (T) getObjectForBeanInstance(sharedInstance, name);
         }
         BeanDefinition beaDefinition = getBeanDefinition(name);
-        return (T) createBean(name, beaDefinition, args);
+        Object bean = (T) createBean(name, beaDefinition, args);
+        return (T) getObjectForBeanInstance(bean, name);
+    }
+
+    private Object getObjectForBeanInstance(Object beanInstance, String beanName) {
+        if (!(beanInstance instanceof FactoryBean)) {
+            return beanInstance;
+        }
+        Object obj = getCacheObjectForFactoryBean(beanName);
+        if (obj == null) {
+            FactoryBean<?> factoryBean = (FactoryBean<?>) beanInstance;
+            return getObjectFromFactoryBean(factoryBean, beanName);
+        }
+        return obj;
     }
 
     /**
