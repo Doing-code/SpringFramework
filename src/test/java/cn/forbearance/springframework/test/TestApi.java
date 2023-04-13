@@ -161,4 +161,12 @@ public class TestApi {
         System.out.println("测试结果：" + userService.query());
     }
 
+    @Test
+    public void test_circular() {
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
+        A a = applicationContext.getBean("a", A.class);
+        B b = applicationContext.getBean("b", B.class);
+        System.out.println(a.getB());
+        System.out.println(b.getA());
+    }
 }

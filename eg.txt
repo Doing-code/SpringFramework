@@ -60,6 +60,19 @@ isAssignableFrom 是用来判断子类和父类的关系的
 15、给代理属性赋值
 所谓的给代理属性数值操作是在 postProcessAfterInitialization 完成的
 
+16、三级循环解决循环依赖
+Spring 中把所有普通 Bean 初始化完成后，再处理代理对象的初始化。
+
+singletonObjects、earlySingletonObjects、singletonFactories
+成品对象、半成品对象（未填充属性）、工厂对象（可能是AOP代理对象）
+
+实际上，A 依赖 B，B 依赖 A，也是使用三级缓存解决的，
+
+如果是单例，将 beanName: AbstractAutowireCapableBeanFactory put 到 三级缓存中 singletonFactories
+如果有循环依赖，从三级缓存中获取，工厂对象
+提前暴露对象
+
+
 
 
 
