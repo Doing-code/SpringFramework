@@ -1,15 +1,10 @@
 package cn.forbearance.springframework.test;
 
-import cn.forbearance.springframework.beans.factory.annotation.Value;
-import cn.forbearance.springframework.stereotype.Component;
-
 /**
  * @author cristina
  */
-@Component("userService")
 public class UserService implements IUserService{
 
-    @Value("${token}")
     private String token;
 
     private String uId;
@@ -28,7 +23,7 @@ public class UserService implements IUserService{
     }
 
     public String query() {
-        return "树枝666" + token;
+        return "树枝666_" + token;
     }
 
     @Override

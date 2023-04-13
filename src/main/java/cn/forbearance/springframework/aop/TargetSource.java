@@ -1,5 +1,7 @@
 package cn.forbearance.springframework.aop;
 
+import cn.forbearance.springframework.util.ClassUtils;
+
 /**
  * 被代理的对象
  *
@@ -14,7 +16,9 @@ public class TargetSource {
     }
 
     public Class<?>[] getTargetClass() {
-        return this.target.getClass().getInterfaces();
+        Class<?> clazz = this.target.getClass();
+        clazz = ClassUtils.isCglibProxyClass(clazz) ? clazz.getSuperclass(): clazz;
+        return clazz.getInterfaces();
     }
 
     public Object getTarget() {

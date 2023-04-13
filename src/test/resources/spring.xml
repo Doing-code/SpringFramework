@@ -6,10 +6,21 @@
 	         http://www.springframework.org/schema/beans/spring-beans.xsd
 		 http://www.springframework.org/schema/context">
 
-    <bean class="cn.forbearance.springframework.beans.factory.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:token.properties"/>
+    <bean id="userService" class="cn.forbearance.springframework.test.UserService">
+        <property name="token" value="RejDlI78hu223Opo983Ds"/>
     </bean>
 
-    <context:component-scan base-package="cn.forbearance.springframework.test"/>
+    <bean class="cn.forbearance.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
+
+    <bean id="beforeAdvice" class="cn.forbearance.springframework.test.UserServiceBeforeAdvice"/>
+
+    <bean id="methodInterceptor" class="cn.forbearance.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor">
+        <property name="advice" ref="beforeAdvice"/>
+    </bean>
+
+    <bean id="pointcutAdvisor" class="cn.forbearance.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor">
+        <property name="expression" value="execution(* cn.forbearance.springframework.test.IUserService.*(..))"/>
+        <property name="advice" ref="methodInterceptor"/>
+    </bean>
 
 </beans>

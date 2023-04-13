@@ -22,6 +22,8 @@ BeanPostProcessor：在Bean实例化之后，修改 Bean 属性信息
 InitializingBean、init-method
 DisposableBean、destroy-method
 
+A继承B实现C时，C的接口方法由A继承的父类B实现
+
 8、Aware感知容器对象
 Aware
 
@@ -44,10 +46,19 @@ FactoryBean 是特殊的 Bean，工厂 Bean，作用类似于 @Bean，但 Factor
 
 简单工厂BeanFactory、工厂方法FactoryBean、策略模式访问资源、观察者模式 事件监听
 
+isAssignableFrom 是用来判断子类和父类的关系的
+
 11、AOP
 
 12、AOP
 每个 BeanDefinition 都会过一遍 getBeanPostProcessors() 循环，只有满足条件的才会被创建代理对象（通过切点找到给定的接口或目标类）
+
+13、扫描组件 component-scan
+
+14、通过注解属性注入
+
+15、给代理属性赋值
+所谓的给代理属性数值操作是在 postProcessAfterInitialization 完成的
 
 
 
