@@ -61,6 +61,8 @@ isAssignableFrom 是用来判断子类和父类的关系的
 所谓的给代理属性数值操作是在 postProcessAfterInitialization 完成的
 
 16、三级循环解决循环依赖
+自身依赖、循环依赖、多组依赖
+
 Spring 中把所有普通 Bean 初始化完成后，再处理代理对象的初始化。
 
 singletonObjects、earlySingletonObjects、singletonFactories
